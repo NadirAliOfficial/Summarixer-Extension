@@ -28,6 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Event listener for the summary button click
   summaryButton.addEventListener("click", function () {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      if (!tabs || !tabs[0]) {
+        return;
+      }
       var currentUrl = tabs[0].url;
 
       // Execute content script to retrieve selected text
@@ -37,7 +40,13 @@ document.addEventListener("DOMContentLoaded", function () {
           code: "window.getSelection().toString();",
         },
         function (selectedText) {
-          selectedText = selectedText[0] || ""; // Ensure selectedText is a string
+          // executeScript fails on restricted pages (e.g. chrome://) and
+          // leaves the result undefined; fall back to an empty selection.
+          if (chrome.runtime.lastError || !selectedText) {
+            selectedText = "";
+          } else {
+            selectedText = selectedText[0] || "";
+          }
           var inputData = {
             url: currentUrl,
             selectedText: selectedText,

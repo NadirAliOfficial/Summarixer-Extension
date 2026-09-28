@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "My Extension",
+  "name": "Summarixer",
   "version": "1.0",
-  "description": "Description of my extension",
+  "description": "Summarize web content with a single click and share data between pages.",
   "permissions": ["activeTab", "tabs", "storage"],
   "browser_action": {
     "default_popup": "popup.html",
@@ -17,6 +17,5 @@
     "scripts": ["background.js"],
     "persistent": false
   },
-  "content_security_policy": "script-src 'self' https://nono.io; object-src 'self'",
   "web_accessible_resources": ["popup.html"]
 }
